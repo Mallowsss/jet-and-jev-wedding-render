@@ -140,7 +140,9 @@ function resetRsvp() {
 // RSVP FORM SUBMISSION → Netlify Function
 // -----------------------------------------------
 async function submitRsvp(event) {
+  console.log("🚀🚀🚀 submitRsvp FUNCTION CALLED 🚀🚀🚀");
   event.preventDefault();
+  console.log("✅ preventDefault called");
 
   const name       = document.getElementById('fullName').value.trim();
   const email      = document.getElementById('email').value.trim();
@@ -151,6 +153,7 @@ async function submitRsvp(event) {
   console.log('Name:', name);
   console.log('Email:', email);
   console.log('Attendance:', attendance);
+  console.log('Button:', btn);
 
   if (!name || !email || !attendance) return;
 
@@ -239,3 +242,16 @@ function openMaps() {
 // -----------------------------------------------
 function show(id) { document.getElementById(id).classList.remove('hidden'); }
 function hide(id) { document.getElementById(id).classList.add('hidden'); }
+
+// -----------------------------------------------
+// GLOBAL ERROR HANDLER
+// -----------------------------------------------
+window.addEventListener('error', function(e) {
+  console.error('💥 GLOBAL ERROR:', e.message, 'at', e.filename, 'line', e.lineno);
+});
+
+window.addEventListener('unhandledrejection', function(e) {
+  console.error('💥 UNHANDLED PROMISE REJECTION:', e.reason);
+});
+
+console.log('✅ Script loaded successfully');
