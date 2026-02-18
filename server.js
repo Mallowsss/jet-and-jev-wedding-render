@@ -215,49 +215,71 @@ async function sendEmailsAsync(params) {
 app.post("/api/rsvp", async (req, res) => {
   const { name, email, attendance } = req.body;
   
-  console.log("🎯 RSVP received:", { name, email, attendance });
+  console.log("=".repeat(60));
+  console.log("🎯 RSVP ENDPOINT HIT");
+  console.log("   Name:", name);
+  console.log("   Email:", email);
+  console.log("   Attendance:", attendance);
+  console.log("=".repeat(60));
 
   if (!name || !email || !attendance) {
+    console.log("❌ Missing fields!");
     return res.status(400).json({ error: "Missing fields" });
   }
 
   const guest    = findGuest(name);
   const isOnList = !!guest;
   
-  console.log("🔍 Guest lookup:", isOnList ? `✅ Found: ${guest.name} (Table ${guest.table})` : `❌ Not on list`);
+  console.log("🔍 Guest lookup result:", isOnList ? "FOUND" : "NOT FOUND");
+  if (isOnList) {
+    console.log("   Guest:", guest.name);
+    console.log("   Table:", guest.table);
+    console.log("   Category:", guest.category);
+  }
   
   const renderUrl = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
 
+  // ⚡ RESPOND IMMEDIATELY
   if (isOnList) {
     const { table, category } = guest;
     const seatImageUrl = getSeatImageUrl(guest.name);
-
-    // 🚀 Send emails in background (non-blocking)
-    sendEmailsAsync({ 
-      type: "confirmed", 
-      guestName: name, 
-      email, 
-      attendance, 
-      table, 
-      category, 
-      seatImageUrl, 
-      renderUrl 
-    }).catch(err => console.error("Email async error:", err));
-
-    // ⚡ Instant response
-    return res.json({ success: true, onList: true, table, category });
+    
+    res.json({ success: true, onList: true, table, category });
+    
+    // 📧 NOW SEND EMAILS (after response sent)
+    console.log("📧 About to send emails...");
+    try {
+      await sendEmailsAsync({ 
+        type: "confirmed", 
+        guestName: name, 
+        email, 
+        attendance, 
+        table, 
+        category, 
+        seatImageUrl, 
+        renderUrl 
+      });
+      console.log("✅ Email sending completed");
+    } catch (err) {
+      console.error("❌ Email sending failed:", err.message);
+    }
 
   } else {
-    // 🚀 Send emails in background (non-blocking)
-    sendEmailsAsync({ 
-      type: "not-listed", 
-      guestName: name, 
-      email, 
-      attendance 
-    }).catch(err => console.error("Email async error:", err));
-
-    // ⚡ Instant response
-    return res.json({ success: true, onList: false });
+    res.json({ success: true, onList: false });
+    
+    // 📧 NOW SEND EMAILS (after response sent)
+    console.log("📧 About to send NOT-LISTED emails...");
+    try {
+      await sendEmailsAsync({ 
+        type: "not-listed", 
+        guestName: name, 
+        email, 
+        attendance 
+      });
+      console.log("✅ Email sending completed");
+    } catch (err) {
+      console.error("❌ Email sending failed:", err.message);
+    }
   }
 });
 
