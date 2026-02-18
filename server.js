@@ -139,6 +139,16 @@ function notOnListEmailHTML({ guestName }) {
 // ── Async email sender ────────────────────────────────────────────────────────
 
 async function sendEmailsAsync(params) {
+  console.log("📧 Starting email send...");
+  
+  // Verify credentials are loaded
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
+    console.error("❌ GMAIL_USER or GMAIL_PASS not set in environment variables!");
+    console.error("   GMAIL_USER:", process.env.GMAIL_USER ? "✅ Set" : "❌ Missing");
+    console.error("   GMAIL_PASS:", process.env.GMAIL_PASS ? "✅ Set" : "❌ Missing");
+    return;
+  }
+
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -159,6 +169,7 @@ async function sendEmailsAsync(params) {
         subject: `💌 RSVP: ${guestName} (${attendance === "in-person" ? "In-Person" : "Zoom"})`,
         html:    hostEmailHTML({ guestName, email, attendance }),
       });
+      console.log(`  ✅ Host email sent to ${HOST_EMAIL}`);
 
       await transporter.sendMail({
         from:    `"Jet & Jev Wedding" <${process.env.GMAIL_USER}>`,
@@ -166,8 +177,9 @@ async function sendEmailsAsync(params) {
         subject: `✅ RSVP Confirmed — Jet & Jev, June 29, 2026`,
         html:    guestConfirmEmailHTML({ guestName, attendance, table, category, seatImageUrl, renderUrl }),
       });
+      console.log(`  ✅ Guest email sent to ${email}`);
 
-      console.log(`✅ Emails sent: ${guestName}`);
+      console.log(`✅ ALL EMAILS SENT for: ${guestName}`);
 
     } else if (params.type === "not-listed") {
       const { guestName, email, attendance } = params;
@@ -178,6 +190,7 @@ async function sendEmailsAsync(params) {
         subject: `Thank you for your RSVP — Jet & Jev`,
         html:    notOnListEmailHTML({ guestName }),
       });
+      console.log(`  ✅ Polite decline email sent to ${email}`);
 
       await transporter.sendMail({
         from:    `"Jet & Jev Wedding" <${process.env.GMAIL_USER}>`,
@@ -185,11 +198,15 @@ async function sendEmailsAsync(params) {
         subject: `⚠️ Unlisted RSVP: ${guestName}`,
         html:    hostEmailHTML({ guestName: `${guestName} ⚠️ (NOT ON LIST)`, email, attendance }),
       });
+      console.log(`  ✅ Alert email sent to host`);
 
-      console.log(`⚠️ Unlisted: ${guestName}`);
+      console.log(`⚠️ UNLISTED GUEST: ${guestName}`);
     }
   } catch (err) {
-    console.error("❌ Email error:", err.message);
+    console.error("❌ EMAIL SEND FAILED!");
+    console.error("   Error type:", err.name);
+    console.error("   Error message:", err.message);
+    console.error("   Full error:", err);
   }
 }
 
@@ -197,6 +214,8 @@ async function sendEmailsAsync(params) {
 
 app.post("/api/rsvp", async (req, res) => {
   const { name, email, attendance } = req.body;
+  
+  console.log("🎯 RSVP received:", { name, email, attendance });
 
   if (!name || !email || !attendance) {
     return res.status(400).json({ error: "Missing fields" });
@@ -204,25 +223,38 @@ app.post("/api/rsvp", async (req, res) => {
 
   const guest    = findGuest(name);
   const isOnList = !!guest;
+  
+  console.log("🔍 Guest lookup:", isOnList ? `✅ Found: ${guest.name} (Table ${guest.table})` : `❌ Not on list`);
+  
   const renderUrl = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
 
   if (isOnList) {
     const { table, category } = guest;
     const seatImageUrl = getSeatImageUrl(guest.name);
 
-    // 🚀 Send emails in background — don't wait
-    setImmediate(() => {
-      sendEmailsAsync({ type: "confirmed", guestName: name, email, attendance, table, category, seatImageUrl, renderUrl });
-    });
+    // 🚀 Send emails in background (non-blocking)
+    sendEmailsAsync({ 
+      type: "confirmed", 
+      guestName: name, 
+      email, 
+      attendance, 
+      table, 
+      category, 
+      seatImageUrl, 
+      renderUrl 
+    }).catch(err => console.error("Email async error:", err));
 
     // ⚡ Instant response
     return res.json({ success: true, onList: true, table, category });
 
   } else {
-    // 🚀 Send emails in background
-    setImmediate(() => {
-      sendEmailsAsync({ type: "not-listed", guestName: name, email, attendance });
-    });
+    // 🚀 Send emails in background (non-blocking)
+    sendEmailsAsync({ 
+      type: "not-listed", 
+      guestName: name, 
+      email, 
+      attendance 
+    }).catch(err => console.error("Email async error:", err));
 
     // ⚡ Instant response
     return res.json({ success: true, onList: false });
