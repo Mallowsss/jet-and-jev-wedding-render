@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+// Note: express.static moved below after API routes
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -210,6 +210,12 @@ async function sendEmailsAsync(params) {
   }
 }
 
+// ── Test endpoint ─────────────────────────────────────────────────────────────
+app.get("/api/test", (req, res) => {
+  console.log("✅ Test endpoint hit!");
+  res.json({ message: "Server is working!", timestamp: new Date().toISOString() });
+});
+
 // ── RSVP API ──────────────────────────────────────────────────────────────────
 
 app.post("/api/rsvp", async (req, res) => {
@@ -283,7 +289,10 @@ app.post("/api/rsvp", async (req, res) => {
   }
 });
 
-// ── Serve index.html for all routes ──────────────────────────────────────────
+// ── Static files (AFTER API routes) ──────────────────────────────────────────
+app.use(express.static(path.join(__dirname, "public")));
+
+// ── Catch-all: serve index.html for any unmatched route ──────────────────────
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
