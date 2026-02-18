@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jev & Jet - Wedding Invitation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Music Button -->
+  <button class="music-btn" id="musicBtn" aria-label="Toggle music">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <path id="soundWaves" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    </svg>
+  </button>
+
+  <!-- Audio -->
+  <audio id="bgMusic" loop>
+    <source src="song/blue (instrumental).mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ═══ HERO ═══════════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="sparkle-overlay"></div>
+    <div class="hero-content">
+      <h1>Jet & Jev</h1>
+      <p>Jethro & Jeverlyn</p>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-indicator-box">
+        <div class="scroll-indicator-dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COUNTDOWN ══════════════════════════════════════════════════════ -->
+  <section class="countdown">
+    <div class="countdown-content">
+      <h2>We're Getting Married!</h2>
+      <p class="countdown-subtitle">Join us as we celebrate our special day</p>
+      <div class="countdown-container" id="countdown">
+        <div class="countdown-block">
+          <span class="count-label">Days</span>
+          <div class="digits-container" id="days"></div>
+        </div>
+        <div class="countdown-block">
+          <span class="count-label">Hours</span>
+          <div class="digits-container" id="hours"></div>
+        </div>
+        <div class="countdown-block">
+          <span class="count-label">Minutes</span>
+          <div class="digits-container" id="minutes"></div>
+        </div>
+        <div class="countdown-block">
+          <span class="count-label">Seconds</span>
+          <div class="digits-container" id="seconds"></div>
+        </div>
+      </div>
+      <button class="rsvp-btn" onclick="scrollToRsvp()">RSVP Now</button>
+    </div>
+  </section>
+
+  <!-- ═══ CALENDAR ═══════════════════════════════════════════════════════ -->
+  <section class="calendar-section">
+    <div class="calendar-wrapper">
+      <h2>Save the Date</h2>
+      <div class="calendar-card">
+        <div class="calendar-header">
+          <h3>June 2026</h3>
+          <p>Monday, June 29th</p>
+        </div>
+        <div class="calendar-grid" id="calendar"></div>
+        <div class="calendar-note"><p>Mark your calendars for our special day!</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TIMELINE ═══════════════════════════════════════════════════════ -->
+  <section class="timeline-section">
+    <div class="timeline-wrapper">
+      <h2>Wedding Timeline</h2>
+      <p class="timeline-subtitle">Schedule of events for our special day</p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-time">2:30 PM</div>
+            <div class="timeline-title">Ceremony</div>
+            <div class="timeline-desc">Join us as we exchange vows</div>
+          </div>
+          <div class="timeline-icon"><img src="images/rings.png" alt="Ceremony"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-time">4:00 PM</div>
+            <div class="timeline-title">Photo Session</div>
+            <div class="timeline-desc">Capture beautiful memories together</div>
+          </div>
+          <div class="timeline-icon"><img src="images/cam.png" alt="Photo"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-time">5:30 PM</div>
+            <div class="timeline-title">Dinner</div>
+            <div class="timeline-desc">Enjoy a delicious feast with us</div>
+          </div>
+          <div class="timeline-icon"><img src="images/spag.png" alt="Dinner"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-time">6:00 PM</div>
+            <div class="timeline-title">Program</div>
+            <div class="timeline-desc">Entertainment and celebration</div>
+          </div>
+          <div class="timeline-icon"><img src="images/program.png" alt="Program"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-time">7:00 PM</div>
+            <div class="timeline-title">End of Celebration</div>
+            <div class="timeline-desc">Thank you for celebrating with us</div>
+          </div>
+          <div class="timeline-icon"><img src="images/celeb.png" alt="Celebration"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ LOCATION ═══════════════════════════════════════════════════════ -->
+  <section class="location-section">
+    <div class="location-wrapper">
+      <h2>How to Get There</h2>
+      <div class="location-grid">
+        <div class="location-image">
+          <img src="https://images.unsplash.com/photo-1519167758481-83f29da8c424?w=800" alt="Maple Grove Manor">
+          <div class="location-image-overlay">Maple Grove Manor</div>
+        </div>
+        <div class="location-details">
+          <div class="location-card">
+            <div class="location-card-header">
+              <div class="location-icon">📍</div>
+              <div><h3>Venue</h3></div>
+            </div>
+            <p><strong>Maple Grove Manor</strong></p>
+            <p>123 Garden Boulevard, Manila</p>
+          </div>
+          <div class="location-card">
+            <div class="location-card-header">
+              <div class="location-icon">🧭</div>
+              <div><h3>Directions</h3></div>
+            </div>
+            <p>From EDSA, take the Garden Boulevard exit. Continue straight for 2km. The venue will be on your right, marked by a large white gate with maple tree decorations.</p>
+            <p style="margin-top:1rem;">Ample parking is available on-site.</p>
+            <button class="map-btn" onclick="openMaps()">📍 Get Directions on Google Maps</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ATTIRE ══════════════════════════════════════════════════════════ -->
+  <section class="attire-section">
+    <div class="attire-wrapper">
+      <h2>Attire Guide</h2>
+      <div class="attire-grid">
+        <div class="attire-card">
+          <div class="attire-header">
+            <div class="attire-icon">✨</div>
+            <h3>Dress Code</h3>
+          </div>
+          <div class="attire-info">
+            <div>
+              <h4>Smart Formal</h4>
+              <p>We encourage our guests to dress in elegant formal attire.</p>
+            </div>
+            <div class="color-divider"></div>
+            <div>
+              <h4>Color Palette</h4>
+              <p>We encourage blue hues to complement our wedding theme. Think soft blues, dusty blues, powder blue, and grey-blue tones.</p>
+            </div>
+            <div class="color-palette">
+              <div class="color-swatch" style="background-color:#667686;"></div>
+              <div class="color-swatch" style="background-color:#97adc2;"></div>
+              <div class="color-swatch" style="background-color:#b8c9dc;"></div>
+              <div class="color-swatch" style="background-color:#d1d9e3;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="attire-image">
+          <img src="https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?w=800" alt="Blue hydrangea flowers">
+          <div class="attire-image-caption">Elegance in blue tones</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GIFTS ════════════════════════════════════════════════════════════ -->
+  <section class="gifts-section">
+    <div class="gifts-wrapper">
+      <div class="gifts-icon-wrapper">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <polyline points="20 12 20 22 4 22 4 12"></polyline>
+          <rect x="2" y="7" width="20" height="5"></rect>
+          <line x1="12" y1="22" x2="12" y2="7"></line>
+          <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+          <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+        </svg>
+      </div>
+      <h2>Gifts & Well Wishes</h2>
+      <div class="gifts-grid">
+        <div class="gift-card">
+          <div class="gift-card-icon">❤️</div>
+          <p style="font-size:1.125rem;color:var(--dark-grey);margin-bottom:1.5rem;">Your presence at our wedding is the greatest gift we could ask for.</p>
+          <div class="gift-divider"></div>
+          <p>However, if you wish to honor us with a gift, a monetary contribution towards our future together would be greatly appreciated.</p>
+          <div class="gift-quote">"The best gift is your love and laughter as we start our new chapter together."</div>
+          <p style="font-size:0.875rem;margin-top:1.5rem;">A gift box will be available at the reception for your convenience.</p>
+        </div>
+        <div class="gift-card">
+          <h3 style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1rem;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            Digital Gift
+          </h3>
+          <p>You can also send your gift digitally by scanning this QR code</p>
+          <div class="qr-code-wrapper">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://example.com/payment" alt="Payment QR Code">
+          </div>
+          <p class="qr-note">(Replace this QR code with your own payment details)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ RSVP ═════════════════════════════════════════════════════════════ -->
+  <section class="rsvp-section" id="rsvp">
+    <div class="rsvp-wrapper">
+      <h2>RSVP</h2>
+
+      <!-- CARD 1 — Will you attend? -->
+      <div class="rsvp-card" id="rsvpInitial">
+        <div class="rsvp-icon">❤️</div>
+        <h3>Will you be able to attend?</h3>
+        <div class="rsvp-buttons">
+          <button class="rsvp-button rsvp-button-yes" onclick="showAttendanceType()">Yes, I'll be there!</button>
+          <button class="rsvp-button rsvp-button-no"  onclick="showDecline()">Sorry, I can't make it</button>
+        </div>
+      </div>
+
+      <!-- CARD 2 — In-person or Zoom? -->
+      <div class="rsvp-card hidden" id="rsvpAttendanceType">
+        <button class="back-btn back-btn-x" onclick="resetRsvp()">✕</button>
+        <div class="rsvp-icon">🎊</div>
+        <h3>How will you be joining us?</h3>
+        <p class="rsvp-sub">Choose how you'll be celebrating with us on our special day</p>
+        <div class="rsvp-buttons attendance-options">
+          <button class="rsvp-button rsvp-button-option" onclick="selectAttendance('in-person')">
+            <span class="option-icon">🏛️</span>
+            <span class="option-label">In-Person</span>
+            <span class="option-desc">I'll be there at the venue</span>
+          </button>
+          <button class="rsvp-button rsvp-button-option" onclick="selectAttendance('zoom')">
+            <span class="option-icon">💻</span>
+            <span class="option-label">Via Zoom</span>
+            <span class="option-desc">I'll join online</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 3 — Guest info form -->
+      <div class="rsvp-card hidden" id="rsvpForm">
+        <button class="back-btn back-btn-x" onclick="goBackToAttendance()">✕</button>
+        <div class="rsvp-icon">🎉</div>
+        <h3>Yay! We can't wait to see you!</h3>
+        <p id="attendanceTypeLabel" class="rsvp-sub"></p>
+        <p style="color:var(--medium-grey);margin-bottom:2rem;">Please fill in your details below</p>
+        <form class="rsvp-form" onsubmit="submitRsvp(event)">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" placeholder="Enter your full name as on the guest list" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="your.email@example.com" required>
+            <p class="form-help">Your confirmation will be sent here</p>
+          </div>
+          <button type="submit" id="submitBtn" class="submit-btn">Submit RSVP ✓</button>
+        </form>
+      </div>
+
+      <!-- CARD 4 — Decline -->
+      <div class="rsvp-card hidden" id="rsvpDecline">
+        <button class="back-btn back-btn-x" onclick="resetRsvp()">✕</button>
+        <div class="rsvp-icon">💔</div>
+        <h3>We'll miss you!</h3>
+        <p style="color:var(--medium-grey);margin-bottom:1.5rem;">We're sorry you won't be able to join us on our special day. We understand that life happens, and we appreciate you letting us know.</p>
+        <div class="message-box"><p>You'll be in our hearts as we celebrate. We hope to celebrate with you another time!</p></div>
+        <button class="back-btn" onclick="resetRsvp()">Go Back</button>
+      </div>
+
+      <!-- CARD 5 — Success (on list) -->
+      <div class="rsvp-card hidden" id="rsvpSuccess">
+        <div class="rsvp-icon">🎊</div>
+        <h3>You're confirmed! 💙</h3>
+        <p style="color:var(--medium-grey);margin-bottom:0.5rem;">Your RSVP has been received. Check your email for full details.</p>
+        <div class="message-box">
+          <p style="margin-bottom:0.75rem;">Your assigned seat:</p>
+          <span class="confirmed-table-badge" id="confirmedTable">Table —</span>
+          <p style="margin-top:0.75rem;font-size:0.85rem;color:var(--medium-grey);">A seating chart will be emailed to you closer to the date.</p>
+        </div>
+      </div>
+
+      <!-- CARD 6 — Not on guest list -->
+      <div class="rsvp-card hidden" id="rsvpNotListed">
+        <div class="rsvp-not-listed-icon">💙</div>
+        <h3>Thank you for your RSVP!</h3>
+        <p style="color:var(--medium-grey);margin-bottom:1.5rem;">We truly appreciate your love and support for our special day.</p>
+        <div class="message-box">
+          <p>Unfortunately, due to limited capacity at our venue, we are unable to accommodate additional guests at this time. We hope you understand, and we look forward to celebrating with you in another way soon.</p>
+        </div>
+        <p style="color:var(--medium-grey);font-size:0.9rem;margin-top:1rem;">We've sent a message to your email with more details.</p>
+        <button class="back-btn" onclick="resetRsvp()">Go Back</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════════════════ -->
+  <footer>
+    <p>Made with love — Jev & Jet</p>
+    <p class="footer-details">June 29, 2026 • Maple Grove Manor, Manila</p>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <div class="toast-icon">✓</div>
+    <div class="toast-message" id="toastMessage"></div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
