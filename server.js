@@ -250,12 +250,13 @@ app.post("/api/rsvp", async (req, res) => {
     const { table, category } = guest;
     const seatImageUrl = getSeatImageUrl(guest.name);
     
+    // Send response first
     res.json({ success: true, onList: true, table, category });
     
-    // 📧 NOW SEND EMAILS (after response sent)
-    console.log("📧 About to send emails...");
-    try {
-      await sendEmailsAsync({ 
+    // 📧 TRIGGER EMAILS AFTER RESPONSE (detached from request lifecycle)
+    process.nextTick(() => {
+      console.log("📧 [DETACHED] About to send emails...");
+      sendEmailsAsync({ 
         type: "confirmed", 
         guestName: name, 
         email, 
@@ -264,28 +265,27 @@ app.post("/api/rsvp", async (req, res) => {
         category, 
         seatImageUrl, 
         renderUrl 
-      });
-      console.log("✅ Email sending completed");
-    } catch (err) {
-      console.error("❌ Email sending failed:", err.message);
-    }
+      })
+      .then(() => console.log("✅ [DETACHED] Email sending completed"))
+      .catch(err => console.error("❌ [DETACHED] Email sending failed:", err.message));
+    });
 
   } else {
+    // Send response first
     res.json({ success: true, onList: false });
     
-    // 📧 NOW SEND EMAILS (after response sent)
-    console.log("📧 About to send NOT-LISTED emails...");
-    try {
-      await sendEmailsAsync({ 
+    // 📧 TRIGGER EMAILS AFTER RESPONSE (detached from request lifecycle)
+    process.nextTick(() => {
+      console.log("📧 [DETACHED] About to send NOT-LISTED emails...");
+      sendEmailsAsync({ 
         type: "not-listed", 
         guestName: name, 
         email, 
         attendance 
-      });
-      console.log("✅ Email sending completed");
-    } catch (err) {
-      console.error("❌ Email sending failed:", err.message);
-    }
+      })
+      .then(() => console.log("✅ [DETACHED] Email sending completed"))
+      .catch(err => console.error("❌ [DETACHED] Email sending failed:", err.message));
+    });
   }
 });
 
