@@ -147,11 +147,18 @@ async function submitRsvp(event) {
   const attendance = selectedAttendance;
   const btn        = document.getElementById('submitBtn');
 
+  console.log('=== FRONTEND: Form submitted ===');
+  console.log('Name:', name);
+  console.log('Email:', email);
+  console.log('Attendance:', attendance);
+
   if (!name || !email || !attendance) return;
 
   // Loading state
   btn.disabled     = true;
   btn.textContent  = 'Sending… ✉️';
+
+  console.log('=== FRONTEND: Sending fetch to /api/rsvp ===');
 
   try {
     const res = await fetch('/api/rsvp', {
@@ -160,7 +167,13 @@ async function submitRsvp(event) {
       body:    JSON.stringify({ name, email, attendance }),
     });
 
+    console.log('=== FRONTEND: Response received ===');
+    console.log('Status:', res.status);
+    console.log('OK:', res.ok);
+
     const data = await res.json();
+    console.log('=== FRONTEND: Data parsed ===');
+    console.log('Data:', data);
 
     if (res.ok && data.success) {
       if (data.onList) {
@@ -190,7 +203,9 @@ async function submitRsvp(event) {
     }
 
   } catch (err) {
-    console.error(err);
+    console.error('=== FRONTEND: ERROR ===');
+    console.error('Error:', err);
+    console.error('Error message:', err.message);
     showToast('Network error. Please check your connection and try again.');
     btn.disabled    = false;
     btn.textContent = 'Submit RSVP ✓';
